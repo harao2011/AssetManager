@@ -18,6 +18,7 @@ $(function() {
         var reader = new FileReader();
         reader.onload = function(event) {
             //通常のCSVはこれでいける
+            //#の区切りで分割する仕組み
             var csvArray = [];
             event.target.result.split('¥n').each(function() {
                 var line = [];
@@ -28,7 +29,7 @@ $(function() {
                 csvArray.push(line);
             });
 
-        }
+        };
         reader.readAsText(AssetManager.file);
 
     });
@@ -39,7 +40,7 @@ $(function() {
         {name:"date",index:"date",width:70,align:"center",classes:"date_class"},
         {name:"target",index:"target",width:70,align:"center",classes:"target_class"},
         {name:"result",index:"result",width:200,align:"center",classes:"name_class"}
-    ]
+    ];
 
     var date = [
         {date:'2013/01',target:150000,result:150000},
@@ -110,7 +111,7 @@ $(function() {
         } else {
             alert('In this Browser, You cannot use this application.');
         }
-    }
+    };
 
     Initialize();
-})
+});
