@@ -5,7 +5,12 @@ $(function() {
     var AssetManager = {};
 
     AssetManager.file;
-    AssetManager.loadedData;//json
+    AssetManager.loadedData = [];//json
+
+    AssetManager.CONST = {
+        LINE_DIVISION_DEFINE: 0,
+        LINE_HEADER_COLUMN: 1
+    }
 
     $('#inputSelectFile').bind('change', function(event) {
         AssetManager.file = event.target.files[0];//multi off
@@ -17,20 +22,40 @@ $(function() {
         }
         var reader = new FileReader();
         reader.onload = function(event) {
-            //通常のCSVはこれでいける
-            //#の区切りで分割する仕組み
-            var csvArray = [];
-            event.target.result.split('¥n').each(function() {
-                var line = [];
-                this.split(',').each(function() {
-                    var cell = this;
-                    line.push(cell);
-                });
-                csvArray.push(line);
-            });
+            var resultJsonObject = [];
+            var divisionArray = event.target.result.split('#');
+            //division loop
+            for (var i = 0; i < divisionArray.length; i++) {
+                if (!divisionArray[i] || divisionArray[i] == '') continue;
+                var lineArray = divisionArray[i].split('¥n');
+                var divObj = new Object();
+                divObj.divisionName = lineArray[0].split(',')[0];
+                if (lineArray[0].split(',')[1]) {
+                    divObj.divisionClass = lineArray[0].split(',')[1];
+                }
 
+                var colItems = lineArray[1].split(',');
+                if (!colItems || colItems.length == 0) continue;
+
+                divObj.records = [];
+
+                //TODO: column headerとbodyの長さが違った場合の制御
+
+                //line loop
+                for (var j = 2; j < lineArray.length; j++) {
+                    var record = new Object();
+                    var csvArray = lineArray[j].split(',');
+                    //csv loop
+                    for (var k = 0; k < csvArray.length; k++) {
+                        record[colItems[j]] = csvArray[k];
+                    }
+                    divObj.records.push(record);
+                }
+                resultJsonObject.push(divObj);
+            }
+            AssetManager.loadedData.push(resultJsonObject);
         };
-        reader.readAsText(AssetManager.file);
+        reader.readAsBinaryString(AssetManager.file);
 
     });
 
