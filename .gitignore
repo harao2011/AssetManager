@@ -14,3 +14,9 @@
 .idea/AssetManager.iml
 
 .idea/workspace.xml
+
+*.prefs
+
+*.class
+
+*.class

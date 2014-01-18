@@ -5,3 +5,16 @@ div.bar {
     background-color: teal;
     margin-right: 5px;
 }
+
+#divTotal {
+	display: inline-block;
+}
+
+#divCash {
+	display: inline-block;
+}
+
+#divInvestment {
+	display: inline-block;
+}
+

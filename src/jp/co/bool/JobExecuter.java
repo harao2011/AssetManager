@@ -5,7 +5,7 @@ import org.directwebremoting.io.FileTransfer;
 public class JobExecuter {
 
 	public String getString() {
-		return "test";
+		return "java method execute";
 	}
 
 	public FileTransfer getDownloadFile(String fileName, String csvText) {

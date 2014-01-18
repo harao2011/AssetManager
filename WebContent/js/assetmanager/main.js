@@ -10,7 +10,7 @@ $(function() {
     AssetManager.CONST = {
         LINE_DIVISION_DEFINE: 0,
         LINE_HEADER_COLUMN: 1
-    }
+    };
 
     $('#inputSelectFile').bind('change', function(event) {
         AssetManager.file = event.target.files[0];//multi off
@@ -40,7 +40,7 @@ $(function() {
 
                 divObj.records = [];
 
-                //TODO: column headerとbodyの長さが違った場合の制御
+                //TODO: column headerとbodyのカラム数が違った場合の制御
 
                 //line loop
                 for (var j = 2; j < lineArray.length; j++) {
@@ -65,7 +65,7 @@ $(function() {
                 rowList : [1, 10, 20],
                 caption : "Sample Display",
                 height : 200,
-                width : 500,
+                width : 400,
                 pager : 'divPagerTotal',
                 shrinkToFit : true,
                 viewrecords: true
@@ -74,13 +74,19 @@ $(function() {
         reader.readAsText(AssetManager.file, "UTF-8");
 
     });
+    
+    $('#inputSave').bind('click', function() {
+    	JobExecuter.getString(function(data) {
+    		alert(data);
+    	});
+    });
 
 
     //grid control section
     var colModelSettings= [
-        {name:"date",index:"date",width:70,align:"center",classes:"date_class"},
-        {name:"target",index:"target",width:70,align:"center",classes:"target_class"},
-        {name:"result",index:"result",width:200,align:"center",classes:"name_class"}
+        {name:"date",index:"date",width:40,align:"center",classes:"date_class"},
+        {name:"target",index:"target",width:40,align:"center",classes:"target_class"},
+        {name:"result",index:"result",width:40,align:"center",classes:"name_class"}
     ];
 
     var date = [
@@ -123,7 +129,7 @@ $(function() {
         rowList : [1, 10, 20],
         caption : "Sample Display",
         height : 200,
-        width : 500,
+        width : 400,
         pager : 'pager',
         shrinkToFit : true,
         viewrecords: true
@@ -138,7 +144,7 @@ $(function() {
         rowList : [1, 10, 20],
         caption : "Sample Display",
         height : 200,
-        width : 500,
+        width : 400,
         pager : 'pager',
         shrinkToFit : true,
         viewrecords: true

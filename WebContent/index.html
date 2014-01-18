@@ -9,22 +9,36 @@
     <link rel="stylesheet" type="text/css" media="screen" href="css/jqgrid/ui.jqgrid.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="css/ui-lightness/jquery-ui-1.10.3.custom.css" />
     <script type="text/javascript" src="js/jquery/jquery-1.9.1.js"></script>
-    <script type="text/javascript" src="js/jquery/jquery-ui-1.10.3.custom.min.js"></script>
+    <script type="text/javascript" src="js/jquery/jquery-ui-1.10.3.custom.js"></script>
     <script type="text/javascript" src="js/jqgrid/i18n/grid.locale-en.js"></script>
     <script type="text/javascript" src="js/jqgrid/jquery.jqGrid.src.js"></script>
+    <script src="dwr/engine.js"></script>
+    <script src="dwr/util.js"></script>
+	<script src="dwr/interface/JobExecuter.js"></script>
     <script type="text/javascript" src="js/assetmanager/main.js"></script>
 
-    <input id="inputSelectFile" type="file">
-    <input id="inputLoadFile" type="button" value="読み込み">
+	<div id="divInput">
+    	<input id="inputSelectFile" type="file">
+    	<input id="inputLoadFile" type="button" value="読み込み">
+	</div>
+	<div id="divSave">
+		<input id="inputSave" type="button" value="保存">
+	</div>
 
-    <table id="tableGridTotal"></table>
-    <div id = "divPagerTotal"></div>
+	<div id="divTotal">
+    	<table id="tableGridTotal"></table>
+    	<div id = "divPagerTotal"></div>
+	</div>
+	
+	<div id="divCash">
+    	<table id="tableGridCash"></table>
+    	<div id = "divPagerCash"></div>
+	</div>
 
-    <table id="tableGridCash"></table>
-    <div id = "divPagerCash"></div>
-
-    <table id="tableGridInvestment"></table>
-    <div id = "divPagerInvestment"></div>
+	<div id="divInvestment">
+    	<table id="tableGridInvestment"></table>
+	    <div id = "divPagerInvestment"></div>
+	</div>
 
 </body>
 </html>
