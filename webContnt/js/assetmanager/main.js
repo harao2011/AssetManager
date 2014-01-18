@@ -22,6 +22,7 @@ $(function() {
         }
         var reader = new FileReader();
         reader.onload = function(event) {
+            AssetManager.loadedData = [];
             var resultJsonObject = [];
             var divisionArray = event.target.result.split('#');
             //division loop
@@ -47,15 +48,30 @@ $(function() {
                     var csvArray = lineArray[j].split(',');
                     //csv loop
                     for (var k = 0; k < csvArray.length; k++) {
-                        record[colItems[j]] = csvArray[k];
+                        record[colItems[k]] = csvArray[k];
                     }
                     divObj.records.push(record);
                 }
                 resultJsonObject.push(divObj);
             }
             AssetManager.loadedData.push(resultJsonObject);
+
+            $("#tableGridTotal").jqGrid({
+                data:resultJsonObject[0].records,
+                datatype : "local",
+                colNames : colNames,
+                colModel : colModelSettings,
+                rowNum : 10,
+                rowList : [1, 10, 20],
+                caption : "Sample Display",
+                height : 200,
+                width : 500,
+                pager : 'divPagerTotal',
+                shrinkToFit : true,
+                viewrecords: true
+            });
         };
-        reader.readAsBinaryString(AssetManager.file);
+        reader.readAsText(AssetManager.file, "UTF-8");
 
     });
 
@@ -84,20 +100,19 @@ $(function() {
     ];
 
     var colNames = ["date","target","result"];
-    $("#tableGridTotal").jqGrid({
-        data:date,
-        datatype : "local",
-        colNames : colNames,
-        colModel : colModelSettings,
-        rowNum : 10,
-        rowList : [1, 10, 20],
-        caption : "Sample Display",
-        height : 200,
-        width : 500,
-        pager : 'divPagerTotal',
-        shrinkToFit : true,
-        viewrecords: true
-    });
+//    $("#tableGridTotal").jqGrid({
+//        datatype : "json",
+////        colNames : colNames,
+////        colModel : colModelSettings,
+//        rowNum : 10,
+//        rowList : [1, 10, 20],
+//        caption : "Sample Display",
+//        height : 200,
+//        width : 500,
+//        pager : 'divPagerTotal'
+////        shrinkToFit : true,
+////        viewrecords: true
+//    });
 
     $("#tableGridCash").jqGrid({
         data:date,
