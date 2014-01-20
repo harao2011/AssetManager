@@ -5,7 +5,7 @@
 <dwr>
   <allow>
     <create creator="new" javascript="JobExecuter">
-      <param name="class" value="jp.co.bool.JobExecuter"/>
+      <param name="class" value="jp.co.bool.execute.JobExecuter"/>
     </create>
   </allow>
 </dwr>

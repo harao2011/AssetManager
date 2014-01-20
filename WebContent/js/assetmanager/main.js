@@ -61,7 +61,7 @@ $(function() {
                 datatype : "local",
                 colNames : colNames,
                 colModel : colModelSettings,
-                rowNum : 10,
+                rowNum : 20,
                 rowList : [1, 10, 20],
                 caption : "Sample Display",
                 height : 200,
@@ -78,7 +78,7 @@ $(function() {
     $('#inputSave').bind('click', function() {
     	var params = [];
     	var obj = {};
-    	obj.saveId = '#tableGridTotal';
+    	obj.id = '#tableGridTotal';
     	obj.header = $('#tableGridTotal').getGridParam('colNames');
     	obj.body = $('#tableGridTotal').getRowData(); 
     	params.push(obj);
@@ -87,7 +87,12 @@ $(function() {
 //    	var paramsStr = JSON.stringify(obj);
 
     	JobExecuter.getDownloadFile(getFileName(), paramsStr, function(data) {
+            dwr.engine.openInDownload(data);
     	});
+
+//        JobExecuter.getDownloadFile(name, text, function(data) {
+//            dwr.engine.openInDownload(data);
+//        });
     
     	//TODO: java化
         function getFileName() {
