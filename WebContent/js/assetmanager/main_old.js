@@ -279,9 +279,6 @@ $(function() {
                     return data.realVal;
                 }
             }
-
         }
-
     }
-
 });

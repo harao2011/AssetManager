@@ -76,9 +76,42 @@ $(function() {
     });
     
     $('#inputSave').bind('click', function() {
-    	JobExecuter.getString(function(data) {
-    		alert(data);
+    	var params = [];
+    	var obj = {};
+    	obj.saveId = '#tableGridTotal';
+    	obj.header = $('#tableGridTotal').getGridParam('colNames');
+    	obj.body = $('#tableGridTotal').getRowData(); 
+    	params.push(obj);
+    	
+    	var paramsStr = JSON.stringify(params);
+//    	var paramsStr = JSON.stringify(obj);
+
+    	JobExecuter.getDownloadFile(getFileName(), paramsStr, function(data) {
     	});
+    
+    	//TODO: java化
+        function getFileName() {
+            return 'asset_manager_' + getDateString() + '.csv';
+
+            function getDateString(date) {
+                if (!date) {
+                    date = new Date();
+                }
+                var yyyy =  date.getFullYear();
+                var mm = toDoubleDigits(date.getMonth() + 1);
+                var dd = toDoubleDigits(date.getDate());
+                return yyyy + mm + dd;
+            }
+
+            function toDoubleDigits(num) {
+                num += '';
+                if (num.length === 1) {
+                    num = '0' + num;
+                }
+                return num;
+            }
+        }
+
     });
 
 
@@ -107,48 +140,48 @@ $(function() {
 
     var colNames = ["date","target","result"];
 //    $("#tableGridTotal").jqGrid({
-//        datatype : "json",
-////        colNames : colNames,
-////        colModel : colModelSettings,
+//        datatype : "local",
+//        colNames : colNames,
+//        colModel : colModelSettings,
 //        rowNum : 10,
 //        rowList : [1, 10, 20],
 //        caption : "Sample Display",
 //        height : 200,
 //        width : 500,
-//        pager : 'divPagerTotal'
-////        shrinkToFit : true,
-////        viewrecords: true
+//        pager : 'divPagerTotal',
+//        shrinkToFit : true,
+//        viewrecords: true
 //    });
 
-    $("#tableGridCash").jqGrid({
-        data:date,
-        datatype : "local",
-        colNames : colNames,
-        colModel : colModelSettings,
-        rowNum : 10,
-        rowList : [1, 10, 20],
-        caption : "Sample Display",
-        height : 200,
-        width : 400,
-        pager : 'pager',
-        shrinkToFit : true,
-        viewrecords: true
-    });
-
-    $("#tableGridInvestment").jqGrid({
-        data:date,
-        datatype : "local",
-        colNames : colNames,
-        colModel : colModelSettings,
-        rowNum : 10,
-        rowList : [1, 10, 20],
-        caption : "Sample Display",
-        height : 200,
-        width : 400,
-        pager : 'pager',
-        shrinkToFit : true,
-        viewrecords: true
-    });
+//    $("#tableGridCash").jqGrid({
+//        data:date,
+//        datatype : "local",
+//        colNames : colNames,
+//        colModel : colModelSettings,
+//        rowNum : 10,
+//        rowList : [1, 10, 20],
+//        caption : "Sample Display",
+//        height : 200,
+//        width : 400,
+//        pager : 'pager',
+//        shrinkToFit : true,
+//        viewrecords: true
+//    });
+//
+//    $("#tableGridInvestment").jqGrid({
+//        data:date,
+//        datatype : "local",
+//        colNames : colNames,
+//        colModel : colModelSettings,
+//        rowNum : 10,
+//        rowList : [1, 10, 20],
+//        caption : "Sample Display",
+//        height : 200,
+//        width : 400,
+//        pager : 'pager',
+//        shrinkToFit : true,
+//        viewrecords: true
+//    });
 
     var Initialize = function() {
         // Check for the various File API support.
