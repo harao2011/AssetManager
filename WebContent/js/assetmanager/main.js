@@ -6,6 +6,7 @@ $(function() {
 
     AssetManager.file;
     AssetManager.loadedData = [];//json
+    AssetManager.dataHeader = ['target','result'];
 
     AssetManager.CONST = {
         LINE_DIVISION_DEFINE: 0,
@@ -50,28 +51,56 @@ $(function() {
                     for (var k = 0; k < csvArray.length; k++) {
                         record[colItems[k]] = csvArray[k];
                     }
-                    divObj.records.push(record);
+                    if (canAdd(record)) {
+                        divObj.records.push(record);
+                    }
                 }
                 resultJsonObject.push(divObj);
             }
-            AssetManager.loadedData.push(resultJsonObject);
+//            AssetManager.loadedData.push(resultJsonObject);
+            
+            for (var i = 0; i < resultJsonObject.length; i++) {
+            	var tableName = resultJsonObject[i].divisionName;
 
-            $("#tableGridTotal").jqGrid({
-                data:resultJsonObject[0].records,
-                datatype : "local",
-                colNames : colNames,
-                colModel : colModelSettings,
-                rowNum : 20,
-                rowList : [1, 10, 20],
-                caption : "Sample Display",
-                height : 200,
-                width : 400,
-                pager : 'divPagerTotal',
-                shrinkToFit : true,
-                viewrecords: true
-            });
+                $("#" + tableName).jqGrid({
+                    data:resultJsonObject[i].records,
+                    datatype : "local",
+                    colNames : colNames,
+                    colModel : colModelSettings,
+                    rowNum : 20,
+                    rowList : [1, 10, 20],
+                    caption : "Sample Display",
+                    height : 200,
+                    width : 400,
+                    pager : getPagerName(tableName),
+                    shrinkToFit : true,
+                    viewrecords: true
+                });
+//                //TODO: ループして各テーブルに対応
+//                loadChart('', resultJsonObject[i]);
+            }
+            //TODO: 基本的にはすぐ上のループの中に移動するはず
+            //ここにIDを入れるところから=================================
+            loadChart('divChartTotal', resultJsonObject[0].records, AssetManager.dataHeader);
         };
         reader.readAsText(AssetManager.file, "UTF-8");
+        
+        //TODO: 暫定ロジック
+        function getPagerName(tableName) {
+        	if (!tableName) throw new Error('Illigal Argment Error: tableName is null');
+        	return tableName.replace('tableGrid', 'divPager');
+        }
+
+        function canAdd(record) {
+            var colSet = AssetManager.dataHeader;
+            for (var i = 0; i < colSet.length; i++) {
+                var value = record[colSet[i]];
+                if (!value || value == '') {
+                    return false;
+                }
+            }
+            return true;
+        }
 
     });
     
@@ -155,7 +184,7 @@ $(function() {
 //        width : 500,
 //        pager : 'divPagerTotal',
 //        shrinkToFit : true,
-//        viewrecords: true
+//        viewrecords:maxValue < dataArray[] true
 //    });
 
 //    $("#tableGridCash").jqGrid({
@@ -187,6 +216,55 @@ $(function() {
 //        shrinkToFit : true,
 //        viewrecords: true
 //    });
+    
+    function loadChart(chartId, dataArray, keys) {
+        var maxVal_Y = getMaxVal(dataArray);
+        var scaleX = d3.scale.linear()
+            .domain([0, dataArray.length])
+            .range([0, 800]);
+        var scaleY = d3.scale.linear()
+            .domain([0, maxVal_Y])
+            .range([0, 200]);
+
+        var canvas = d3.select('#divChartTotal');
+
+        var svg = canvas.append('svg')
+            .attr('width', 800)
+            .attr('height', 200);
+
+        var lines = [];
+        var colors = ['blue', 'red'];
+        for (var idx = 0; idx < keys.length; idx++) {
+            var line = d3.svg.line()
+                .x(function(d, i) {
+                    return scaleX(i);
+                })
+                .y(function(d, i) {
+                    return scaleY((maxVal_Y - d[keys[idx]]));
+                })
+                .interpolate('linear');
+
+            svg.append('path')
+                .attr('d', line(dataArray))
+                .attr('stroke', colors[idx])
+                .attr('stroke-width', 2)
+                .attr('fill', 'none');
+        }
+
+        //target, resultの最大値を返す
+        function getMaxVal(dataArray) {
+            var maxValue;
+            for (var i = 0; i < dataArray.length; i++) {
+                if ((!maxValue && maxValue != 0) || maxValue < dataArray[i].target) {
+                    maxValue = dataArray[i].target;
+                }
+                if ((!maxValue && maxValue != 0) || maxValue < dataArray[i].result) {
+                    maxValue = dataArray[i].result;
+                }
+            }
+            return maxValue;
+        }
+    }
 
     var Initialize = function() {
         // Check for the various File API support.
